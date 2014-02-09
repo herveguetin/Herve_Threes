@@ -1,0 +1,342 @@
+/**
+ * Config for Threes
+ */
+
+
+//======================================================================================= */
+// Colors ================================================================================ */
+
+$threes_colors: (
+  #333333, // color1
+  #666666, // color2, etc
+  #888888,
+  #999999
+);
+
+// ======================================================================================= */
+// Margin ================================================================================ */
+
+// $threes_marginMin: 5;
+// $threes_marginMax: 50;
+// $threes_marginStep: 5;
+
+// ======================================================================================= */
+// Padding ================================================================================ */
+
+// $threes_paddingMin: 5;
+// $threes_paddingMax: 50;
+// $threes_paddingStep: 5;
+
+// ======================================================================================= */
+// Border ================================================================================ */
+
+// $threes_borderMin: 1;
+// $threes_borderMax: 2;
+// $threes_borderStep: 1;
+
+// ======================================================================================= */
+// Font-size ================================================================================ */
+
+// $threes_fontSizeMin: 8;
+// $threes_fontSizeMax: 18;
+// $threes_fontSizeStep: 2;
+
+
+// ======================================================================================= */
+// ======================================================================================= */
+// ======================================================================================= */
+// ======================================================================================= */
+
+/**
+ *
+ *
+ * Threes (Simple Semantic Styles)
+ *
+ *
+ */
+/**
+ * @copyright	Copyright (c) 2013 Hervé Guétin
+ * @license		http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @author		Hervé Guétin - http://www.herveguetin.com - @herveguetin
+ */
+
+// ======================================================================================= */
+// Mixins ================================================================================ */
+
+@mixin threes_frame($property: margin, $prop: $property, $min: 5, $max: 50, $step: 5, $suffixes: (top, right, bottom, left), $suffixesShort: (t, r, b, l)) {
+  @for $i from 1 to round(($max/$step) + 1) {
+    $value: $i*$step;
+    @if $value >= $min {
+      .#{$prop}-#{$value} {
+        #{$property}: #{$value}px;
+      }
+      @if($suffixes) {
+        @for $j from 1 to length($suffixes) + 1 {
+          .#{$prop}-#{$value}-#{nth($suffixesShort, $j)} {
+            #{$property}-#{nth($suffixes, $j)}: #{$value}px;
+          }
+        }
+      }
+    }
+  }
+}
+
+/* ======================================================================================= */
+/* Colors ================================================================================ */
+
+$threes_colors: (
+  #333333, // color1
+  #666666, // color2, etc
+  #888888,
+  #999999
+) !default;
+
+@for $i from 1 to length($threes_colors) + 1{
+  .color#{$i}-tx {
+    color: nth($threes_colors, $i);
+  }
+
+  .color#{$i}-bd {
+    border-color: nth($threes_colors, $i);
+  }
+
+  .color#{$i}-bg {
+    background-color: nth($threes_colors, $i);
+  }
+}
+
+.white-tx {
+  color: white;
+}
+
+.white-bd {
+  border-color: white;
+}
+
+.white-bg {
+  background-color: white;
+}
+
+/* ====================================================================================== */
+/* Position ============================================================================= */
+
+.pos-abs {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.pos-rel {
+    position: relative;
+}
+
+.v-top {
+    vertical-align: top;
+}
+
+.v-middle {
+    vertical-align: middle;
+}
+
+.v-bottom {
+    vertical-align: bottom;
+}
+
+/* ======================================================================================= */
+/* Float ================================================================================= */
+
+.f-left,
+.left {
+    float: left !important;
+}
+
+.f-right,
+.right {
+    float: right !important;
+}
+
+.f-none {
+    float: none !important;
+}
+
+.f-fix {
+    float: left;
+    width: 100%;
+}
+
+/* ======================================================================================= */
+/* Display & Visibility ================================================================== */
+
+.dis-b {
+    display: block
+}
+
+.dis-li {
+    display: list-item;
+}
+
+.dis-in {
+    display: inline
+}
+
+.dis-inb {
+    display: inline-block
+}
+
+.dis-t {
+    display: table
+}
+
+.no-display {
+    display: none;
+}
+
+.hidden {
+    display: block !important;
+    border: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 0 !important;
+    line-height: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+}
+
+/* ======================================================================================= */
+/* Overflow ============================================================================== */
+
+.ov-auto {
+    overflow: auto;
+}
+
+.ov-hidden {
+    overflow: hidden;
+}
+
+/* ======================================================================================= */
+/* Margin ================================================================================ */
+
+.no-margin {
+  margin: 0 !important;
+}
+
+.mg-auto {
+  margin: auto;
+}
+
+// ======================================================================================= */
+
+$threes_marginMin: 5 !default;
+$threes_marginMax: 50 !default;
+$threes_marginStep: 5 !default;
+
+@include threes_frame(margin, mg, $threes_marginMin, $threes_marginMax, $threes_marginStep);
+
+/* ======================================================================================= */
+/* Padding =============================================================================== */
+
+.no-padding {
+  padding: 0 !important;
+}
+
+// ======================================================================================= */
+
+$threes_paddingMin: 5 !default;
+$threes_paddingMax: 50 !default;
+$threes_paddingStep: 5 !default;
+
+@include threes_frame(padding, pd, $threes_paddingMin, $threes_paddingMax, $threes_paddingStep);
+
+/* ======================================================================================= */
+/* Border ================================================================================ */
+
+.bd {
+  border-width: 0px;
+  border-style: solid;
+}
+
+.bd-none {
+  border: none!important;
+}
+
+// ======================================================================================= */
+
+$threes_borderMin: 1 !default;
+$threes_borderMax: 5 !default;
+$threes_borderStep: 1 !default;
+
+@include threes_frame(border-width, bd, $threes_borderMin, $threes_borderMax, $threes_borderStep);
+
+/* ======================================================================================= */
+/* Font, Text, Typography ================================================================ */
+
+
+.ft-st-i {
+  font-style: italic;
+}
+
+.ft-st-u {
+  text-decoration: underline;
+}
+
+.ft-st-s {
+  text-decoration: line-through;
+}
+
+.ft-up {
+  text-transform: uppercase;
+}
+
+.ft-lo {
+  text-transform: lowercase;
+}
+
+.ft-cap {
+  text-transform: none !important;
+}
+
+.ft-reset {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: normal;
+  font-style: normal;
+}
+
+.a-left {
+  text-align: left !important;
+}
+
+.a-center {
+  text-align: center !important;
+}
+
+.a-right {
+  text-align: right !important;
+}
+
+.nobr {
+  white-space: nowrap !important;
+}
+
+.wrap {
+  white-space: normal !important;
+}
+
+// ======================================================================================= */
+
+$threes_fontSizeMin: 8 !default;
+$threes_fontSizeMax: 18 !default;
+$threes_fontSizeStep: 2 !default;
+
+@include threes_frame(font-size, ft-sz, $threes_fontSizeMin, $threes_fontSizeMax, $threes_fontSizeStep, null, null);
+
+/* ======================================================================================= */
+/* Tools ================================================================================= */
+
+.no-bg {
+    background: none !important;
+}
+
+.c-point {
+    cursor: pointer;
+}
