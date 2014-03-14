@@ -16,14 +16,14 @@
 // ======================================================================================= */
 // Margin ================================================================================ */
 
-// $threes_marginMin: 5;
+// $threes_marginMin: 0;
 // $threes_marginMax: 50;
 // $threes_marginStep: 5;
 
 // ======================================================================================= */
 // Padding ================================================================================ */
 
-// $threes_paddingMin: 5;
+// $threes_paddingMin: 0;
 // $threes_paddingMax: 50;
 // $threes_paddingStep: 5;
 
@@ -56,20 +56,22 @@
  */
 /**
  * @copyright	Copyright (c) 2013 Hervé Guétin
- * @license		http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- * @author		Hervé Guétin - http://www.herveguetin.com - @herveguetin
+ * @license	 http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @author	 Hervé Guétin - http://www.herveguetin.com - @herveguetin
  * @github      https://github.com/herveguetin/Herve_Threes
  */
 
 // ======================================================================================= */
 // Mixins ================================================================================ */
 
-@mixin threes_frame($property: margin, $prop: $property, $min: 5, $max: 50, $step: 5, $suffixes: (top, right, bottom, left), $suffixesShort: (t, r, b, l)) {
-  @for $i from 1 to round(($max/$step) + 1) {
+@mixin threes_frame($property: margin, $prop: $property, $min: 5, $max: 50, $step: 5, $suffixes: (top, right, bottom, left), $suffixesShort: (t, r, b, l), $withMainProperty: true) {
+  @for $i from 0 to round(($max/$step) + 1) {
     $value: $i*$step;
     @if $value >= $min {
-      .#{$prop}-#{$value} {
-        #{$property}: #{$value}px;
+      @if($withMainProperty) {
+        .#{$prop}-#{$value} {
+          #{$property}: #{$value}px;
+        }
       }
       @if($suffixes) {
         @for $j from 1 to length($suffixes) + 1 {
@@ -78,6 +80,57 @@
           }
         }
       }
+    }
+  }
+}
+
+@mixin threes_getColor($colorIndex: 1, $property: border, $isImportant: false) {
+  @for $i from 1 to length($threes_colors) + 1{
+    @if($i == $colorIndex) {
+      $value: nth($threes_colors, $i);
+      @if($isImportant) {
+        $value: $value + $isImportant;
+      }
+      @if($property == 'text') {
+        color: #{$value};
+      }
+      @else {
+        #{$property}-color: #{$value};
+      }
+    }
+  }
+}
+
+@mixin threes_gutter($colorIndex: 1, $borderStyle: solid, $borderWidth: 10, $left: 50%) {
+  @include threes_getColor($colorIndex, border);
+  content:"";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: #{$left};
+  margin-left: #{$borderWidth/-2}px;
+  border-left-style: #{$borderStyle};
+  border-left-width: #{$borderWidth}px;
+}
+
+@mixin threes_centerInContainer($container: '.image-container', $horizontally: true, $vertically: true) {
+  overflow: hidden;
+  #{$container} {
+    position: absolute;
+    @if($horizontally) {
+      left: 50%;
+    }
+    @if($vertically) {
+      top: 50%
+    }
+  }
+  #{$container} > * {
+    position: relative;
+    @if($horizontally) {
+      left: -50%;
+    }
+    @if($vertically) {
+      top: -50%
     }
   }
 }
@@ -122,25 +175,25 @@ $threes_colors: (
 /* Position ============================================================================= */
 
 .pos-abs {
-    position: absolute;
-    top: 0;
-    left: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .pos-rel {
-    position: relative;
+  position: relative;
 }
 
 .v-top {
-    vertical-align: top;
+  vertical-align: top;
 }
 
 .v-middle {
-    vertical-align: middle;
+  vertical-align: middle;
 }
 
 .v-bottom {
-    vertical-align: bottom;
+  vertical-align: bottom;
 }
 
 /* ======================================================================================= */
@@ -148,71 +201,77 @@ $threes_colors: (
 
 .f-left,
 .left {
-    float: left !important;
+  float: left !important;
 }
 
 .f-right,
 .right {
-    float: right !important;
+  float: right !important;
 }
 
 .f-none {
-    float: none !important;
+  float: none !important;
 }
 
 .f-fix {
-    float: left;
-    width: 100%;
+  float: left;
+  width: 100%;
 }
 
 /* ======================================================================================= */
 /* Display & Visibility ================================================================== */
 
 .dis-b {
-    display: block
+  display: block
 }
 
 .dis-li {
-    display: list-item;
+  display: list-item;
 }
 
 .dis-in {
-    display: inline
+  display: inline
 }
 
 .dis-inb {
-    display: inline-block
+  display: inline-block
 }
 
 .dis-t {
-    display: table
+  display: table
 }
 
 .no-display {
-    display: none;
+  display: none;
 }
 
 .hidden {
-    display: block !important;
-    border: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    font-size: 0 !important;
-    line-height: 0 !important;
-    width: 0 !important;
-    height: 0 !important;
-    overflow: hidden !important;
+  display: block !important;
+  border: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  font-size: 0 !important;
+  line-height: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
 }
 
 /* ======================================================================================= */
 /* Overflow ============================================================================== */
 
 .ov-auto {
-    overflow: auto;
+  overflow: auto;
 }
 
 .ov-hidden {
-    overflow: hidden;
+  overflow: hidden;
+}
+
+/* ======================================================================================= */
+/* Size ================================================================================== */
+.width-full {
+  width: 100%;
 }
 
 /* ======================================================================================= */
@@ -228,7 +287,7 @@ $threes_colors: (
 
 // ======================================================================================= */
 
-$threes_marginMin: 5 !default;
+$threes_marginMin: 0 !default;
 $threes_marginMax: 50 !default;
 $threes_marginStep: 5 !default;
 
@@ -243,7 +302,7 @@ $threes_marginStep: 5 !default;
 
 // ======================================================================================= */
 
-$threes_paddingMin: 5 !default;
+$threes_paddingMin: 0 !default;
 $threes_paddingMax: 50 !default;
 $threes_paddingStep: 5 !default;
 
@@ -257,7 +316,7 @@ $threes_paddingStep: 5 !default;
   border-style: solid;
 }
 
-.bd-none {
+.no-border {
   border: none!important;
 }
 
@@ -267,11 +326,17 @@ $threes_borderMin: 1 !default;
 $threes_borderMax: 5 !default;
 $threes_borderStep: 1 !default;
 
-@include threes_frame(border-width, bd, $threes_borderMin, $threes_borderMax, $threes_borderStep);
+$threes_frameBorderSuffixes: ('top-width', 'right-width', 'bottom-width', 'left-width');
+@include threes_frame(border, bd, $threes_borderMin, $threes_borderMax, $threes_borderStep, $threes_frameBorderSuffixes, (t, r, b, l), false);
+
+@include threes_frame(border-width, bd, $threes_borderMin, $threes_borderMax, $threes_borderStep, false);
 
 /* ======================================================================================= */
 /* Font, Text, Typography ================================================================ */
 
+.ft-st-b {
+  font-weight: bold;
+}
 
 .ft-st-i {
   font-style: italic;
@@ -335,9 +400,9 @@ $threes_fontSizeStep: 2 !default;
 /* Tools ================================================================================= */
 
 .no-bg {
-    background: none !important;
+  background: none !important;
 }
 
 .c-point {
-    cursor: pointer;
+  cursor: pointer;
 }
