@@ -84,10 +84,18 @@
   }
 }
 
-@mixin threes_getColor($colorIndex: 1, $property: border, $isImportant: false) {
+@mixin threes_getColor($colorIndex: 1, $property: border, $isImportant: false, $lumPercent: false) {
   @for $i from 1 to length($threes_colors) + 1{
     @if($i == $colorIndex) {
       $value: nth($threes_colors, $i);
+      @if($lumPercent) {
+        @if($lumPercent <= 0) {
+          $value: darken($value, -1*$lumPercent);
+        }
+        @if($lumPercent >= 0) {
+          $value: lighten($value, $lumPercent);
+        }
+      }
       @if($isImportant) {
         $value: $value + $isImportant;
       }
